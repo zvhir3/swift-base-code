@@ -9,9 +9,35 @@ import SwiftUI
 
 @main
 struct BaseSwiftApp: App {
+    @StateObject private var viewModel = AppViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if viewModel.isUserLoggedIn {
+                BottomNavigationView()
+            } else {
+                LoginView()
+            }
         }
     }
 }
+
+class AppViewModel: ObservableObject {
+    @Published var isUserLoggedIn: Bool = false
+    
+    init() {
+        checkUserLoginStatus()
+    }
+    
+    func checkUserLoginStatus() {
+        isUserLoggedIn = isAnyEmailExist()
+    }
+}
+//
+//#Preview {
+//    if AppViewModel().isUserLoggedIn {
+//        BottomNavigationView()
+//    } else {
+//        LoginView()
+//    }
+//}
